@@ -6,8 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -18,7 +17,6 @@ import com.example.gencidev.ui.screens.BookDetailScreen
 import com.example.gencidev.ui.screens.BookListScreen
 import com.example.gencidev.ui.theme.GencidevTheme
 import com.example.gencidev.viewmodel.BookViewModel
-import com.example.gencidev.viewmodel.BookViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,9 +25,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GencidevTheme {
                 val navController: NavHostController = rememberNavController()
-                val viewModel: BookViewModel = viewModel(
-                    factory = BookViewModelFactory(this)
-                )
+                val viewModel: BookViewModel = viewModel()
                 val allBooks by viewModel.books.collectAsState(initial = emptyList())
 
                 Scaffold { innerPadding ->

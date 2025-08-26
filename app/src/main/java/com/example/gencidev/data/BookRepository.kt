@@ -18,7 +18,8 @@ class BookRepository(
                 BookEntity(
                     key = book.key,
                     title = book.title,
-                    authorName = book.author_name?.joinToString(", ")
+                    authorName = book.author_name?.joinToString(", "),
+                    coverId = book.cover_i
                 )
             }
             bookDao.insertAll(entities)

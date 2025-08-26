@@ -18,15 +18,16 @@ class BookRepository(
                 BookEntity(
                     key = book.key,
                     title = book.title,
-                    authorName = book.author_name?.joinToString(", "),
-                    coverId = book.cover_i
+                    authorName = book.author_name?.joinToString(", ")
+
                 )
             }
             bookDao.insertAll(entities)
         } catch (e: Exception) {
-            // TODO: handle error (log, dsb)
+            e.printStackTrace()
         }
     }
+
 
     fun searchBooks(query: String): Flow<List<BookEntity>> {
         return bookDao.searchBooks(query)

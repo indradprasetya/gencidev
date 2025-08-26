@@ -17,6 +17,10 @@ import com.example.gencidev.ui.screens.BookDetailScreen
 import com.example.gencidev.ui.screens.BookListScreen
 import com.example.gencidev.ui.theme.GencidevTheme
 import com.example.gencidev.viewmodel.BookViewModel
+import com.example.gencidev.viewmodel.BookViewModelFactory
+
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +29,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GencidevTheme {
                 val navController: NavHostController = rememberNavController()
-                val viewModel: BookViewModel = viewModel()
+                val viewModel: BookViewModel = viewModel(factory = BookViewModelFactory(this))
                 val allBooks by viewModel.books.collectAsState(initial = emptyList())
 
                 Scaffold { innerPadding ->
@@ -38,8 +42,17 @@ class MainActivity : ComponentActivity() {
                             BookListScreen(navController = navController, viewModel = viewModel)
                         }
                         composable("detail/{bookKey}") { backStackEntry ->
+                            val encodedKey = backStackEntry.arguments?.getString("bookKey")
+                            val bookKey = encodedKey?.let {
+                                try {
+                                    URLDecoder.decode(it, StandardCharsets.UTF_8.toString())
+                                } catch (e: Exception) {
+                                    null
+                                }
+                            }
+
                             BookDetailScreen(
-                                bookKey = backStackEntry.arguments?.getString("bookKey"),
+                                bookKey = bookKey,
                                 books = allBooks
                             )
                         }
@@ -49,3 +62,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+

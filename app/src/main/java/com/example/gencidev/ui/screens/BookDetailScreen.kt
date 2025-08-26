@@ -9,8 +9,10 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.gencidev.data.local.BookEntity
 
+
 @Composable
 fun BookDetailScreen(bookKey: String?, books: List<BookEntity>) {
+    // cari berdasarkan key
     val book = books.find { it.key == bookKey }
 
     Column(
@@ -23,22 +25,6 @@ fun BookDetailScreen(bookKey: String?, books: List<BookEntity>) {
             Text(book.title, style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(8.dp))
             Text(book.authorName ?: "No author", style = MaterialTheme.typography.bodyLarge)
-
-            // tampilkan cover kalau ada
-            book.coverId?.let { coverId ->
-                AsyncImage(
-                    model = "https://covers.openlibrary.org/b/id/${coverId}-L.jpg",
-                    contentDescription = "Book Cover",
-                    modifier = Modifier
-                        .size(200.dp)
-                        .padding(top = 16.dp)
-                )
-            } ?: Text(
-                text = "Gambar tidak tersedia",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 16.dp)
-            )
-
         } else {
             Text("Book not found.")
         }
